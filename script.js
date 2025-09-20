@@ -8,7 +8,7 @@ function addMessage(sender, text, isError = false) {
 
   const avatar = document.createElement("img");
   avatar.className = "avatar";
-  avatar.src = sender === "usuario" ? "usuario.png" : "sindico.png"; // corrigido
+  avatar.src = sender === "usuario" ? "usuario.png" : "sindico.png";
   avatar.alt = sender === "usuario" ? "Usuário" : "Síndico";
 
   const bubble = document.createElement("div");
@@ -60,12 +60,7 @@ userInput.addEventListener("keydown", (e) => {
   }
 });
 
-// Mensagem de boas-vindas (trazida do assistente)
-window.addEventListener("DOMContentLoaded", async () => {
-  try {
-    const data = await callAssistant("mensagem_inicial"); // não manda vazio
-    if (data.reply) addMessage("sindico", data.reply);
-  } catch (err) {
-    console.warn("Sem mensagem inicial:", err);
-  }
+// Mensagem inicial fixa (só 1x)
+window.addEventListener("DOMContentLoaded", () => {
+  addMessage("sindico", "Olá, eu sou o Síndico Virtual do Parque dos Manacás SJP. Como posso ajudar?");
 });
