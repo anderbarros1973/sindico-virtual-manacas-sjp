@@ -2,13 +2,6 @@ const chatContainer = document.getElementById("chat-container");
 const userInput = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
 
-// Função para converter markdown em HTML simples
-function renderMarkdown(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // **negrito**
-    .replace(/\n/g, "<br>"); // quebra de linha
-}
-
 function addMessage(sender, text, isError = false) {
   const msg = document.createElement("div");
   msg.className = `message ${sender}${isError ? " error" : ""}`;
@@ -20,7 +13,7 @@ function addMessage(sender, text, isError = false) {
 
   const bubble = document.createElement("div");
   bubble.className = "bubble";
-  bubble.innerHTML = renderMarkdown(text); // Renderiza markdown como HTML
+  bubble.textContent = text;
 
   if (sender === "usuario") {
     msg.appendChild(bubble);
@@ -54,7 +47,7 @@ async function sendMessage() {
     const data = await callAssistant(text);
     addMessage("sindico", data.reply ?? "Sem resposta do assistente.");
   } catch (err) {
-    console.error("Erro no envio:", err);
+    console.error(err);
     addMessage("sindico", "⚠️ Erro ao conectar com o servidor.", true);
   }
 }
@@ -67,14 +60,23 @@ userInput.addEventListener("keydown", (e) => {
   }
 });
 
-// Mensagem inicial FIXA (personalizada)
-window.addEventListener("DOMContentLoaded", () => {
+// Exibe a mensagem inicial diferenciada
+window.addEventListener("DOMContentLoaded", async () => {
   const welcomeMessage = `Prezados condôminos,
 
 Atenciosamente, coloco-me à disposição para quaisquer esclarecimentos ou informações necessárias.
 
-Cordialmente,  
-Síndico Virtual  
+Cordialmente,
+Síndico Virtual
 Condomínio Parque dos Manacás SJP`;
-  addMessage("sindico", welcomeMessage);
+
+  try {
+    const msg = document.createElement("div");
+    msg.className = "welcome-message";
+    msg.textContent = welcomeMessage;
+    chatContainer.appendChild(msg);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  } catch (err) {
+    console.warn("Sem mensagem inicial:", err);
+  }
 });
