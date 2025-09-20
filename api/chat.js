@@ -1,6 +1,7 @@
 export async function handler(event) {
   try {
     const body = JSON.parse(event.body);
+    const userMessage = body.message || "";
 
     const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
@@ -10,12 +11,13 @@ export async function handler(event) {
       },
       body: JSON.stringify({
         model: "gpt-4.1-mini",
-        input: body.message,
+        input: userMessage || "inicie a conversa com sua mensagem padrão de boas-vindas"
       }),
     });
 
     const data = await response.json();
-    const reply = data.output?.[0]?.content?.[0]?.text || "Não consegui entender sua pergunta.";
+    const reply =
+      data.output?.[0]?.content?.[0]?.text || "Não consegui gerar resposta.";
 
     return {
       statusCode: 200,
