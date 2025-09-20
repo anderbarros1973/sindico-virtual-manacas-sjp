@@ -62,12 +62,17 @@ userInput.addEventListener("keydown", (e) => {
 
 // Exibe a mensagem inicial diferenciada
 window.addEventListener("DOMContentLoaded", async () => {
-  const welcomeMessage = `Prezados condôminos,
+  const welcomeMessage = `Olá condômino! 
+  
+  Este atendimento é realizado por Inteligência Artificial, e está em "periodo de testes". 
+  
+  Apesar de buscar as informações nos arquivos oficiais do condomínio para gerar as respostas, 
+  estou sujeito a cometer erros neste período.
 
-Atenciosamente, coloco-me à disposição para quaisquer esclarecimentos ou informações necessárias.
 
-Cordialmente,
-Síndico Virtual
+Cordialmente, 
+
+Síndico Virtual 
 Condomínio Parque dos Manacás SJP`;
 
   try {
