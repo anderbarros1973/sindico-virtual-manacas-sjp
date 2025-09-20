@@ -7,23 +7,24 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="titles">
-      <h1>Síndico Virtual</h1>
-      <h2>Parque dos Manacás SJP</h2>
-    </div>
-  </header>
+  <div class="chat-widget">
+    <header class="topbar">
+      <img src="/manacas.png" alt="Logo Manacás" class="logo" />
+      <div class="titles">
+        <h1>Síndico Virtual</h1>
+        <h2>Parque dos Manacás SJP</h2>
+      </div>
+    </header>
 
-  <main class="chat-container" id="chat-container">
-    <div class="message sindico">
-      <div class="bubble">Olá, eu sou o Síndico Virtual. Como posso ajudar?</div>
-    </div>
-  </main>
+    <main class="chat-container" id="chat-container">
+      <!-- O assistente enviará automaticamente a mensagem de boas-vindas -->
+    </main>
 
-  <footer class="input-bar">
-    <input type="text" id="user-input" placeholder="Digite sua mensagem..." />
-    <button id="send-btn">Enviar</button>
-  </footer>
+    <footer class="input-bar">
+      <input type="text" id="user-input" placeholder="Digite sua mensagem..." />
+      <button id="send-btn">Enviar</button>
+    </footer>
+  </div>
 
   <script src="script.js"></script>
 </body>
