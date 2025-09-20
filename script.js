@@ -8,7 +8,7 @@ function addMessage(sender, text, isError = false) {
 
   const avatar = document.createElement("img");
   avatar.className = "avatar";
-  avatar.src = sender === "usuario" ? "/usuario.png" : "/sindico.png";
+  avatar.src = sender === "usuario" ? "usuario.png" : "sindico.png"; // corrigido
   avatar.alt = sender === "usuario" ? "Usuário" : "Síndico";
 
   const bubble = document.createElement("div");
@@ -47,7 +47,7 @@ async function sendMessage() {
     const data = await callAssistant(text);
     addMessage("sindico", data.reply ?? "Sem resposta do assistente.");
   } catch (err) {
-    console.error(err);
+    console.error("Erro no envio:", err);
     addMessage("sindico", "⚠️ Erro ao conectar com o servidor.", true);
   }
 }
@@ -60,10 +60,10 @@ userInput.addEventListener("keydown", (e) => {
   }
 });
 
-// Pede a mensagem de boas-vindas (usando o Assistente configurado)
+// Mensagem de boas-vindas (trazida do assistente)
 window.addEventListener("DOMContentLoaded", async () => {
   try {
-    const data = await callAssistant(""); // vazio = peça a saudação do assistente
+    const data = await callAssistant("mensagem_inicial"); // não manda vazio
     if (data.reply) addMessage("sindico", data.reply);
   } catch (err) {
     console.warn("Sem mensagem inicial:", err);
