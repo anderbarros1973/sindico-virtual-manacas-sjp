@@ -1,0 +1,18 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: #fff; color: #1b1b1b; }
+.topbar { display:flex; align-items:center; gap:10px; background:#365740; color:#fff; padding:10px 14px; }
+.logo { height:40px; border-radius:4px; }
+.titles h1 { margin:0; font-size:18px; }
+.titles h2 { margin:0; font-size:12px; font-weight:400; opacity:.9; }
+
+.chat { min-height:70vh; padding:16px; background:#fafafa; overflow:auto; }
+.msg { display:flex; gap:8px; margin:8px 0; align-items:flex-start; }
+.msg.usuario { justify-content:flex-end; }
+.avatar { width:28px; height:28px; border-radius:6px; }
+.bubble { max-width:62ch; padding:10px 12px; border-radius:14px; line-height:1.35; }
+.sindico .bubble { background:#fde2e4; }
+.usuario .bubble { background:#dff3e4; }
+
+.composer { display:flex; gap:8px; padding:10px; border-top:1px solid #ddd; position:sticky; bottom:0; background:#fff; }
+.composer input { flex:1; padding:10px; border:1px solid #ccc; border-radius:6px; }
+.composer button { padding:10px 16px; background:#365740; color:#fff; border:0; border-radius:6px; cursor:pointer; }
