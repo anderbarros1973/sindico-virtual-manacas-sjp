@@ -1,18 +1,117 @@
-* { box-sizing: border-box; }
-body { margin: 0; font-family: Arial, sans-serif; background: #fff; color: #1b1b1b; }
-.topbar { display:flex; align-items:center; gap:10px; background:#365740; color:#fff; padding:10px 14px; }
-.logo { height:40px; border-radius:4px; }
-.titles h1 { margin:0; font-size:18px; }
-.titles h2 { margin:0; font-size:12px; font-weight:400; opacity:.9; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-.chat { min-height:70vh; padding:16px; background:#fafafa; overflow:auto; }
-.msg { display:flex; gap:8px; margin:8px 0; align-items:flex-start; }
-.msg.usuario { justify-content:flex-end; }
-.avatar { width:28px; height:28px; border-radius:6px; }
-.bubble { max-width:62ch; padding:10px 12px; border-radius:14px; line-height:1.35; }
-.sindico .bubble { background:#fde2e4; }
-.usuario .bubble { background:#dff3e4; }
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-.composer { display:flex; gap:8px; padding:10px; border-top:1px solid #ddd; position:sticky; bottom:0; background:#fff; }
-.composer input { flex:1; padding:10px; border:1px solid #ccc; border-radius:6px; }
-.composer button { padding:10px 16px; background:#365740; color:#fff; border:0; border-radius:6px; cursor:pointer; }
+.chat-widget {
+  width: 400px;
+  height: 600px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #365740;
+  color: #fff;
+  padding: 10px 14px;
+}
+
+.logo {
+  height: 36px;
+  border-radius: 4px;
+}
+
+.titles h1 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.titles h2 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.chat-container {
+  flex: 1;
+  padding: 12px;
+  background: #fafafa;
+  overflow-y: auto;
+}
+
+.message {
+  display: flex;
+  gap: 8px;
+  margin: 6px 0;
+  align-items: flex-start;
+}
+
+.message.usuario {
+  justify-content: flex-end;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: 8px 12px;
+  border-radius: 14px;
+  line-height: 1.3;
+  font-size: 14px;
+}
+
+.sindico .bubble {
+  background: #e6f3ff;
+  color: #1b1b1b;
+}
+
+.usuario .bubble {
+  background: #dff3e4;
+  color: #1b1b1b;
+}
+
+.input-bar {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: #fff;
+}
+
+.input-bar input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.input-bar button {
+  padding: 10px 16px;
+  background: #365740;
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
