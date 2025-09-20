@@ -67,12 +67,14 @@ userInput.addEventListener("keydown", (e) => {
   }
 });
 
-// Mensagem inicial do assistente
-window.addEventListener("DOMContentLoaded", async () => {
-  try {
-    const data = await callAssistant(""); // vazio = saudação inicial
-    if (data.reply) addMessage("sindico", data.reply);
-  } catch (err) {
-    console.warn("Sem mensagem inicial:", err);
-  }
+// Mensagem inicial FIXA (personalizada)
+window.addEventListener("DOMContentLoaded", () => {
+  const welcomeMessage = `Prezados condôminos,
+
+Atenciosamente, coloco-me à disposição para quaisquer esclarecimentos ou informações necessárias.
+
+Cordialmente,  
+Síndico Virtual  
+Condomínio Parque dos Manacás SJP`;
+  addMessage("sindico", welcomeMessage);
 });
