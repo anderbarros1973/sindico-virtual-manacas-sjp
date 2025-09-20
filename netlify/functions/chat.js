@@ -1,48 +1,32 @@
-// netlify/functions/chat.js
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
 export async function handler(event) {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: JSON.stringify({ error: "Method not allowed" }) };
   }
 
   try {
-    const { message = "" } = JSON.parse(event.body || "{}");
+    const body = JSON.parse(event.body);
+    const userMessage = body.message;
 
-    const apiKey = process.env.OPENAI_API_KEY;
-    const assistantId = process.env.OPENAI_ASSISTANT_ID; // defina no Netlify
-
-    if (!apiKey || !assistantId) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "Variáveis OPENAI_API_KEY / OPENAI_ASSISTANT_ID não configuradas." })
-      };
-    }
-
-    // Se vier vazio, pedimos ao assistente que responda com a saudação padrão
-    const userInput = message || "Por favor, inicie a conversa com sua mensagem padrão de boas-vindas.";
-
-    const resp = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        assistant_id: assistantId,
-        input: userInput
-      })
+    const response = await client.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: "Você é o Síndico Virtual do condomínio Parque dos Manacás SJP. Responda sempre de forma formal, clara e objetiva, conforme as regras do condomínio." },
+        { role: "user", content: userMessage }
+      ]
     });
 
-    const data = await resp.json();
-
-    // Tenta usar o campo resumido (quando disponível) ou faz fallback
-    const reply =
-      data.output_text ||
-      data.output?.[0]?.content?.[0]?.text ||
-      "Não consegui gerar resposta.";
-
-    return { statusCode: 200, body: JSON.stringify({ reply }) };
-  } catch (error) {
-    console.error("Erro na função:", error);
-    return { statusCode: 500, body: JSON.stringify({ error: "Erro no servidor." }) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ reply: response.choices[0].message.content })
+    };
+  } catch (err) {
+    console.error("Erro na função serverless:", err);
+    return { statusCode: 500, body: JSON.stringify({ error: "Erro interno do servidor" }) };
   }
 }
