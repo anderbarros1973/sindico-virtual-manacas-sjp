@@ -1,0 +1,11 @@
+{
+  "name": "sindico-virtual",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "echo 'Rodando no Netlify'"
+  },
+  "dependencies": {
+    "openai": "^4.0.0"
+  }
+}
