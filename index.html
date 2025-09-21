@@ -7,21 +7,34 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="chat-widget">
-    <header class="topbar">
-      <img src="logo.png" alt="Logo do condomínio" />
-      <div class="titles">
-        <h1>Síndico Virtual</h1>
-        <h2>Parque dos Manacás SJP</h2>
+  <div class="chat-container">
+    <div class="chat-header">
+      <img src="logo.png" alt="Logo do condomínio" class="chat-logo" />
+      <div>
+        <h2>Síndico Virtual</h2>
+        <p>Parque dos Manacás SJP</p>
       </div>
-    </header>
+    </div>
 
-    <main class="chat-container" id="chat-container"></main>
+    <div class="chat-messages" id="chat-messages">
+      <!-- Mensagem inicial fixa -->
+      <div class="message bot">
+        <p>
+          Olá condômino!<br><br>
+          Este atendimento é realizado por Inteligência Artificial, e está em "período de testes".<br><br>
+          Apesar de buscar as informações nos arquivos oficiais do condomínio para gerar as respostas,<br>
+          estou sujeito a cometer erros neste período.<br><br>
+          Cordialmente,<br>
+          Síndico Virtual<br>
+          Condomínio Parque dos Manacás SJP
+        </p>
+      </div>
+    </div>
 
-    <footer class="input-bar">
-      <input type="text" id="user-input" placeholder="Digite sua mensagem...">
-      <button id="send-btn">Enviar</button>
-    </footer>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Digite sua mensagem..." />
+      <button id="send-button">Enviar</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
