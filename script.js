@@ -1,49 +1,64 @@
-const messagesContainer = document.getElementById("chat-messages");
+// script.js
+
+const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
 const sendButton = document.getElementById("send-button");
 
-// Função para adicionar mensagem no chat
-function addMessage(text, sender) {
+// Função para adicionar mensagens ao chat
+function addMessage(message, sender) {
   const messageElement = document.createElement("div");
   messageElement.classList.add("message", sender);
 
-  // Usa innerText para evitar caracteres estranhos de formatação
-  messageElement.innerText = text;
+  // Se a mensagem for do bot, aplicar formatação especial para as fontes
+  if (sender === "bot") {
+    messageElement.innerHTML = formatSources(message);
+  } else {
+    messageElement.textContent = message;
+  }
 
-  messagesContainer.appendChild(messageElement);
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  chatBox.appendChild(messageElement);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Enviar mensagem
-async function sendMessage() {
-  const text = userInput.value.trim();
-  if (!text) return;
+// Função que formata os caracteres de citação 【x:y†source】
+function formatSources(text) {
+  // Substitui as citações pelo texto "Fonte: Regulamento do Condomínio"
+  return text.replace(/【\d+:\d+†source】/g, "<span class='fonte'>(Fonte: Regulamento do Condomínio)</span>");
+}
 
-  addMessage(text, "user");
-  userInput.value = "";
-
+// Função para chamar o assistente
+async function callAssistant(message) {
   try {
     const response = await fetch("/.netlify/functions/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text })
+      body: JSON.stringify({ message }),
     });
 
     if (!response.ok) {
-      throw new Error(`Erro HTTP: ${response.status}`);
+      throw new Error(`HTTP ${response.status}`);
     }
 
     const data = await response.json();
     addMessage(data.reply, "bot");
   } catch (error) {
-    addMessage("⚠️ Erro ao conectar com o servidor.", "bot");
     console.error("Erro no envio:", error);
+    addMessage("⚠️ Erro ao conectar com o servidor.", "bot");
   }
 }
 
+// Enviar mensagem
+function sendMessage() {
+  const message = userInput.value.trim();
+  if (!message) return;
+
+  addMessage(message, "user");
+  userInput.value = "";
+  callAssistant(message);
+}
+
+// Eventos
 sendButton.addEventListener("click", sendMessage);
 userInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    sendMessage();
-  }
+  if (e.key === "Enter") sendMessage();
 });
