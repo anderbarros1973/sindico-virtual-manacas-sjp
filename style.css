@@ -1,44 +1,46 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   margin: 0;
+  background: #f0f2f5;
 }
 
 .chat-box {
-  width: 400px;
-  background: #fff;
+  width: 420px;
+  height: 600px;
+  border: 1px solid #ccc;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .topbar {
-  background-color: #2f5233;
+  background: #2f5233;
   color: white;
   padding: 10px;
   display: flex;
   align-items: center;
+  font-size: 14px;
 }
 
-.topbar img.logo {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
+.topbar img {
+  width: 28px;
+  height: 28px;
+  margin-right: 8px;
 }
 
-.topbar .titles h1 {
+.topbar h1 {
   margin: 0;
   font-size: 16px;
-  font-weight: bold;
 }
 
-.topbar .titles h2 {
+.topbar h2 {
   margin: 0;
   font-size: 12px;
   font-weight: normal;
@@ -48,13 +50,15 @@ body {
   flex: 1;
   padding: 10px;
   overflow-y: auto;
+  max-height: 480px;  /* fixa o tamanho */
+  min-height: 480px;
   background: #fafafa;
 }
 
 .message {
   display: flex;
   align-items: flex-end;
-  margin: 8px 0;
+  margin-bottom: 12px;
 }
 
 .message.usuario {
@@ -65,42 +69,44 @@ body {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  margin: 0 5px;
+  margin: 0 6px;
 }
 
-.message .bubble {
-  max-width: 70%;
-  padding: 10px;
+.bubble {
+  padding: 10px 14px;
   border-radius: 12px;
-  line-height: 1.4;
+  max-width: 75%;
   word-wrap: break-word;
-}
-
-.message.usuario .bubble {
-  background-color: #d2f8d2;
-  color: #333;
-  border-bottom-right-radius: 2px;
+  white-space: pre-line; /* mantém quebras de linha */
+  line-height: 1.4;
 }
 
 .message.sindico .bubble {
-  background-color: #e6f0ff;
-  color: #333;
-  border-bottom-left-radius: 2px;
+  background: #e3f0ff;
+  color: #222;
+  border: 1px solid #bcd;
+}
+
+.message.usuario .bubble {
+  background: #d7f5dd;
+  color: #222;
+  border: 1px solid #b5d8b9;
 }
 
 .message.error .bubble {
-  background-color: #ffe0e0;
-  color: #900;
+  background: #ffd6d6;
+  color: #a33;
+  border: 1px solid #f5aaaa;
 }
 
 .input-bar {
   display: flex;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #ccc;
 }
 
 .input-bar input {
   flex: 1;
-  padding: 10px;
+  padding: 12px;
   border: none;
   outline: none;
   font-size: 14px;
@@ -110,26 +116,11 @@ body {
   background: #2f5233;
   color: white;
   border: none;
-  padding: 0 20px;
+  padding: 0 18px;
   cursor: pointer;
   font-size: 14px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
 }
 
 .input-bar button:hover {
-  background: #244024;
-}
-
-/* Caixa diferenciada para mensagem de boas-vindas */
-.welcome-message {
-  background-color: #f9f9f9;
-  border-left: 4px solid #2f5233;
-  padding: 12px;
-  margin: 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #333;
-  white-space: pre-line;
+  background: #244127;
 }
