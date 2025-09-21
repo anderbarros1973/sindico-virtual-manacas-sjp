@@ -1,126 +1,92 @@
 body {
   font-family: Arial, sans-serif;
+  background-color: #f4f6f8;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   margin: 0;
-  background: #f0f2f5;
-}
-
-.chat-box {
-  width: 420px;
-  height: 600px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.topbar {
-  background: #2f5233;
-  color: white;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-}
-
-.topbar img {
-  width: 28px;
-  height: 28px;
-  margin-right: 8px;
-}
-
-.topbar h1 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.topbar h2 {
-  margin: 0;
-  font-size: 12px;
-  font-weight: normal;
 }
 
 .chat-container {
-  flex: 1;
+  width: 450px;
+  max-width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  background-color: #1e4023; /* verde escuro */
+  color: white;
   padding: 10px;
+}
+
+.chat-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-right: 10px;
+}
+
+.chat-header h2,
+.chat-header p {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 15px;
   overflow-y: auto;
-  max-height: 480px;  /* fixa o tamanho */
-  min-height: 480px;
-  background: #fafafa;
+  background-color: #f9f9f9;
 }
 
 .message {
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: 12px;
-}
-
-.message.usuario {
-  justify-content: flex-end;
-}
-
-.message .avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  margin: 0 6px;
-}
-
-.bubble {
+  margin-bottom: 15px;
   padding: 10px 14px;
-  border-radius: 12px;
-  max-width: 75%;
+  border-radius: 8px;
+  max-width: 80%;
   word-wrap: break-word;
-  white-space: pre-line; /* mantém quebras de linha */
-  line-height: 1.4;
 }
 
-.message.sindico .bubble {
-  background: #e3f0ff;
-  color: #222;
-  border: 1px solid #bcd;
+.message.bot {
+  background: #e6f0ff;
+  color: #000;
+  align-self: flex-start;
 }
 
-.message.usuario .bubble {
-  background: #d7f5dd;
-  color: #222;
-  border: 1px solid #b5d8b9;
+.message.user {
+  background: #d4f8d4;
+  color: #000;
+  align-self: flex-end;
 }
 
-.message.error .bubble {
-  background: #ffd6d6;
-  color: #a33;
-  border: 1px solid #f5aaaa;
-}
-
-.input-bar {
+.chat-input {
   display: flex;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #ddd;
 }
 
-.input-bar input {
+.chat-input input {
   flex: 1;
-  padding: 12px;
   border: none;
-  outline: none;
+  padding: 12px;
   font-size: 14px;
 }
 
-.input-bar button {
-  background: #2f5233;
+.chat-input button {
+  background-color: #1e4023;
   color: white;
   border: none;
-  padding: 0 18px;
+  padding: 0 20px;
   cursor: pointer;
-  font-size: 14px;
 }
 
-.input-bar button:hover {
-  background: #244127;
+.chat-input button:hover {
+  background-color: #145019;
 }
