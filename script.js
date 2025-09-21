@@ -1,77 +1,49 @@
-const chatContainer = document.getElementById("chat-container");
+const messagesContainer = document.getElementById("chat-messages");
 const userInput = document.getElementById("user-input");
-const sendBtn = document.getElementById("send-btn");
+const sendButton = document.getElementById("send-button");
 
-function addMessage(sender, text, isError = false) {
-  const msg = document.createElement("div");
-  msg.className = `message ${sender}${isError ? " error" : ""}`;
+// Função para adicionar mensagem no chat
+function addMessage(text, sender) {
+  const messageElement = document.createElement("div");
+  messageElement.classList.add("message", sender);
 
-  const avatar = document.createElement("img");
-  avatar.className = "avatar";
-  avatar.src = sender === "usuario" ? "/usuario.png" : "/sindico.png";
-  avatar.alt = sender === "usuario" ? "Usuário" : "Síndico";
+  // Usa innerText para evitar caracteres estranhos de formatação
+  messageElement.innerText = text;
 
-  const bubble = document.createElement("div");
-  bubble.className = "bubble";
-  bubble.textContent = text;
-
-  if (sender === "usuario") {
-    msg.appendChild(bubble);
-    msg.appendChild(avatar);
-  } else {
-    msg.appendChild(avatar);
-    msg.appendChild(bubble);
-  }
-
-  chatContainer.appendChild(msg);
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  messagesContainer.appendChild(messageElement);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-async function callAssistant(message) {
-  const res = await fetch("/.netlify/functions/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message })
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
-}
-
+// Enviar mensagem
 async function sendMessage() {
   const text = userInput.value.trim();
   if (!text) return;
-  addMessage("usuario", text);
+
+  addMessage(text, "user");
   userInput.value = "";
 
   try {
-    const data = await callAssistant(text);
-    addMessage("sindico", data.reply ?? "Sem resposta do assistente.");
-  } catch (err) {
-    console.error("Erro no envio:", err);
-    addMessage("sindico", "⚠️ Erro ao conectar com o servidor.", true);
+    const response = await fetch("/.netlify/functions/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+
+    const data = await response.json();
+    addMessage(data.reply, "bot");
+  } catch (error) {
+    addMessage("⚠️ Erro ao conectar com o servidor.", "bot");
+    console.error("Erro no envio:", error);
   }
 }
 
-sendBtn.addEventListener("click", sendMessage);
-userInput.addEventListener("keydown", (e) => {
+sendButton.addEventListener("click", sendMessage);
+userInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
-    e.preventDefault();
     sendMessage();
   }
-});
-
-// Mensagem inicial fixa de boas-vindas
-window.addEventListener("DOMContentLoaded", () => {
-  const welcome = `Olá condômino!
-
-Este atendimento é realizado por Inteligência Artificial, e está em "periodo de testes".
-
-Apesar de buscar as informações nos arquivos oficiais do condomínio para gerar as respostas,
-estou sujeito a cometer erros neste período.
-
-Cordialmente,
-Síndico Virtual
-Condomínio Parque dos Manacás SJP`;
-
-  addMessage("sindico", welcome);
 });
