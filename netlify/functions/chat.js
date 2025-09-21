@@ -1,5 +1,4 @@
 // netlify/functions/chat.js
-
 import fetch from "node-fetch";
 
 export async function handler(event, context) {
@@ -33,50 +32,84 @@ export async function handler(event, context) {
   }
 
   try {
-    const res = await fetch("https://api.openai.com/v1/responses", {
+    // 1️⃣ Criar um thread
+    const threadRes = await fetch("https://api.openai.com/v1/threads", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "OpenAI-Beta": "assistants=v2"
+      }
+    });
+    const thread = await threadRes.json();
+
+    // 2️⃣ Adicionar mensagem do usuário
+    await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "OpenAI-Beta": "assistants=v2"
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
-        reasoning: { effort: "medium" },
-        input: [
-          {
-            role: "user",
-            content: [
-              { type: "input_text", text: message || "mensagem de boas-vindas" }
-            ]
-          }
-        ],
-        metadata: { assistant_id: assistantId }
+        role: "user",
+        content: [{ type: "text", text: message || "mensagem de boas-vindas" }]
       })
     });
 
-    const data = await res.json();
+    // 3️⃣ Criar um run no assistant
+    const runRes = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "OpenAI-Beta": "assistants=v2"
+      },
+      body: JSON.stringify({
+        assistant_id: assistantId
+      })
+    });
+    const run = await runRes.json();
 
-    if (!res.ok) {
-      console.error("Erro na resposta:", data);
+    // 4️⃣ Esperar até o run terminar
+    let runStatus = run;
+    while (runStatus.status !== "completed" && runStatus.status !== "failed") {
+      await new Promise((r) => setTimeout(r, 1500));
+      const statusRes = await fetch(
+        `https://api.openai.com/v1/threads/${thread.id}/runs/${run.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "OpenAI-Beta": "assistants=v2"
+          }
+        }
+      );
+      runStatus = await statusRes.json();
+    }
+
+    if (runStatus.status === "failed") {
       return {
-        statusCode: res.status,
-        body: JSON.stringify({ error: data })
+        statusCode: 500,
+        body: JSON.stringify({ error: "Run failed", details: runStatus })
       };
     }
 
-    // Extrai texto de saída
-    let reply = "Sem resposta do assistente.";
-    if (data.output_text) {
-      reply = data.output_text;
-    } else if (data.output && Array.isArray(data.output)) {
-      // pega a primeira parte de texto, se existir
-      const textPart = data.output.find(
-        (o) => o.content && o.content[0]?.type === "output_text"
-      );
-      if (textPart) {
-        reply = textPart.content[0].text;
+    // 5️⃣ Buscar mensagens do thread
+    const msgsRes = await fetch(
+      `https://api.openai.com/v1/threads/${thread.id}/messages`,
+      {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "OpenAI-Beta": "assistants=v2"
+        }
       }
-    }
+    );
+    const msgs = await msgsRes.json();
+
+    // Pegar a última mensagem do assistant
+    const assistantMsg = msgs.data.find((m) => m.role === "assistant");
+    const reply =
+      assistantMsg?.content?.[0]?.text?.value || "Sem resposta do assistente.";
 
     return {
       statusCode: 200,
